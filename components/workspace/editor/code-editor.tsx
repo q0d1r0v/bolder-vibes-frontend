@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Editor, { type OnMount } from "@monaco-editor/react";
 import { Spinner } from "@/components/ui/spinner";
 import { getFileLanguage } from "@/lib/utils";
@@ -22,14 +22,25 @@ export function CodeEditor({
   readOnly = false,
 }: CodeEditorProps) {
   const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
+  const fileRef = useRef<ProjectFile | null>(file);
+  const onSaveRef = useRef(onSave);
+
+  useEffect(() => {
+    fileRef.current = file;
+  }, [file]);
+
+  useEffect(() => {
+    onSaveRef.current = onSave;
+  }, [onSave]);
 
   const handleMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
 
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-      if (file) {
-        const content = editor.getValue();
-        onSave(file.id, content);
+      const currentFile = fileRef.current;
+
+      if (currentFile) {
+        onSaveRef.current(currentFile.id, editor.getValue());
       }
     });
   };
@@ -61,6 +72,7 @@ export function CodeEditor({
     <Editor
       height="100%"
       language={language}
+      path={`file:///${file.projectId || "project"}/${file.path}`}
       value={content}
       onChange={handleChange}
       onMount={handleMount}
