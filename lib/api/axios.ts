@@ -16,11 +16,14 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor: unwrap backend { data: ... } wrapper
-// Skip unwrapping for paginated responses that have a "meta" key
+// Response interceptor: unwrap backend { statusCode, data, timestamp } wrapper
+// Paginated responses contain "totalPages" alongside "data" — preserve them intact
 api.interceptors.response.use((response) => {
-  if (response.data && 'data' in response.data && !('meta' in response.data)) {
-    response.data = response.data.data;
+  if (response.data && 'data' in response.data) {
+    if ('totalPages' in response.data) {
+      return response; // Paginated — keep { data, total, page, limit, totalPages }
+    }
+    response.data = response.data.data; // Non-paginated — unwrap to inner data
   }
   return response;
 });

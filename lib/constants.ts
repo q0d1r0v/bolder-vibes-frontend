@@ -31,4 +31,7 @@ export const QUERY_KEYS = {
   CONVERSATIONS: (projectId: string) => ['conversations', projectId],
   CONVERSATION: (id: string) => ['conversation', id],
   USERS: ['users'],
+  AGENT_TASKS: (projectId: string) => ['agent-tasks', projectId],
+  AGENT_TASK: (projectId: string, taskId: string) => ['agent-task', projectId, taskId],
+  SANDBOX_STATUS: (projectId: string) => ['sandbox-status', projectId],
 } as const;

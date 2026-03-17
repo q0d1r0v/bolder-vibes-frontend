@@ -1,12 +1,17 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSocket } from './use-socket';
 import { useAgentStore } from '@/stores/agent-store';
+import { useSocketStore } from '@/stores/socket-store';
+import { QUERY_KEYS } from '@/lib/constants';
 import type { AgentTask, AgentStep, AgentType } from '@/types';
 
 export function useAgentStream() {
   const { subscribe } = useSocket();
+  const queryClient = useQueryClient();
+  const projectRoom = useSocketStore((s) => s.currentProjectRoom);
   const { setTask, addStep, updateStep, appendPartialOutput, completeTask, failTask } =
     useAgentStore();
 
@@ -77,16 +82,24 @@ export function useAgentStream() {
         result: AgentTask['result'];
       }>('agent:task_completed', (data) => {
         completeTask(data.result);
+        // Refresh files and conversations after agent completes
+        if (projectRoom) {
+          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FILES(projectRoom) });
+          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CONVERSATIONS(projectRoom) });
+          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.AGENT_TASKS(projectRoom) });
+        }
+        queryClient.invalidateQueries({ queryKey: ['conversation'] });
       }),
 
       subscribe<{ taskId: string; error: string }>(
         'agent:task_failed',
         (data) => {
           failTask(data.error);
+          queryClient.invalidateQueries({ queryKey: ['conversation'] });
         }
       ),
     ];
 
     return () => unsubs.forEach((unsub) => unsub());
-  }, [subscribe, setTask, addStep, updateStep, appendPartialOutput, completeTask, failTask]);
+  }, [subscribe, setTask, addStep, updateStep, appendPartialOutput, completeTask, failTask, queryClient, projectRoom]);
 }

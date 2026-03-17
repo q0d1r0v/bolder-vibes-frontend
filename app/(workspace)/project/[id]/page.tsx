@@ -21,7 +21,7 @@ import { ChatInput } from "@/components/workspace/chat/chat-input";
 import { PreviewPanel } from "@/components/workspace/preview/preview-panel";
 
 import { useProject } from "@/hooks/queries/use-projects";
-import { useFiles, useUpdateFile } from "@/hooks/queries/use-files";
+import { useFiles, useFile, useUpdateFile } from "@/hooks/queries/use-files";
 import {
   useConversations,
   useConversation,
@@ -79,6 +79,15 @@ export default function ProjectPage() {
   const { isRunning } = useAgentStore();
 
   const updateFile = useUpdateFile(projectId);
+
+  // Fetch full file content when a file is selected (list endpoint may omit content)
+  const { data: fileDetail } = useFile(projectId, activeFileId || '');
+
+  useEffect(() => {
+    if (fileDetail && fileDetail.content !== undefined) {
+      updateFileContent(fileDetail.id, fileDetail.content);
+    }
+  }, [fileDetail, updateFileContent]);
 
   const currentFileIds = new Set(files.map((file) => file.id));
   const projectOpenTabs = openTabs.filter((tab) => currentFileIds.has(tab.id));

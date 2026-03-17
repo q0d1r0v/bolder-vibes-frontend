@@ -5,3 +5,4 @@ export * from './file';
 export * from './conversation';
 export * from './agent';
 export * from './api';
+export * from './sandbox';

@@ -1,10 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { RefreshCw, ExternalLink, Monitor, Tablet, Smartphone } from "lucide-react";
+import { useState } from "react";
+import {
+  RefreshCw,
+  ExternalLink,
+  Monitor,
+  Tablet,
+  Smartphone,
+  Play,
+  Square,
+} from "lucide-react";
 import { IconButton } from "@/components/ui/icon-button";
+import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { useSocket } from "@/hooks/use-socket";
+import {
+  usePreviewStatus,
+  useStartPreview,
+  useStopPreview,
+} from "@/hooks/queries/use-sandbox";
 import { cn } from "@/lib/utils";
 
 type DeviceSize = "desktop" | "tablet" | "mobile";
@@ -20,32 +33,18 @@ interface PreviewPanelProps {
 }
 
 export function PreviewPanel({ projectId }: PreviewPanelProps) {
-  const { subscribe } = useSocket();
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [isBuilding, setIsBuilding] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { data: status } = usePreviewStatus(projectId);
+  const startPreview = useStartPreview(projectId);
+  const stopPreview = useStopPreview(projectId);
+
   const [device, setDevice] = useState<DeviceSize>("desktop");
   const [refreshKey, setRefreshKey] = useState(0);
 
-  useEffect(() => {
-    const unsubs = [
-      subscribe("preview:building", () => {
-        setIsBuilding(true);
-        setError(null);
-      }),
-      subscribe<{ url: string }>("preview:ready", (data) => {
-        setPreviewUrl(data.url);
-        setIsBuilding(false);
-        setError(null);
-      }),
-      subscribe<{ error: string }>("preview:error", (data) => {
-        setIsBuilding(false);
-        setError(data.error);
-      }),
-    ];
-
-    return () => unsubs.forEach((unsub) => unsub());
-  }, [subscribe]);
+  const previewUrl = status?.url ?? null;
+  const isBuilding = status?.status === "building";
+  const hasError = status?.status === "error";
+  const isReady = status?.status === "ready";
+  const isIdle = !status || status.status === "idle";
 
   return (
     <div className="h-full flex flex-col bg-white">
@@ -75,9 +74,30 @@ export function PreviewPanel({ projectId }: PreviewPanelProps) {
         </div>
 
         <div className="flex items-center gap-1">
+          {(isIdle || hasError) && (
+            <IconButton
+              size="sm"
+              onClick={() => startPreview.mutate()}
+              disabled={startPreview.isPending}
+              title="Start Preview"
+            >
+              <Play className="h-3.5 w-3.5" />
+            </IconButton>
+          )}
+          {(isBuilding || isReady) && (
+            <IconButton
+              size="sm"
+              onClick={() => stopPreview.mutate()}
+              disabled={stopPreview.isPending}
+              title="Stop Preview"
+            >
+              <Square className="h-3.5 w-3.5" />
+            </IconButton>
+          )}
           <IconButton
             size="sm"
             onClick={() => setRefreshKey((k) => k + 1)}
+            disabled={!previewUrl}
           >
             <RefreshCw className="h-3.5 w-3.5" />
           </IconButton>
@@ -98,10 +118,22 @@ export function PreviewPanel({ projectId }: PreviewPanelProps) {
             <Spinner size="lg" />
             <p className="text-sm text-text-muted mt-3">Building preview...</p>
           </div>
-        ) : error ? (
+        ) : hasError ? (
           <div className="text-center px-6">
             <p className="text-sm text-danger font-medium">Build Error</p>
-            <p className="text-xs text-text-muted mt-1 max-w-sm">{error}</p>
+            <p className="text-xs text-text-muted mt-1 max-w-sm">
+              {status?.error || "An error occurred during the build."}
+            </p>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="mt-4"
+              onClick={() => startPreview.mutate()}
+              loading={startPreview.isPending}
+            >
+              <Play className="h-3.5 w-3.5" />
+              Retry
+            </Button>
           </div>
         ) : previewUrl ? (
           <iframe
@@ -119,8 +151,18 @@ export function PreviewPanel({ projectId }: PreviewPanelProps) {
           <div className="text-center">
             <p className="text-sm text-text-muted">No preview available</p>
             <p className="text-xs text-text-muted mt-1">
-              Send a message to generate code
+              Start a preview to see your app running
             </p>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="mt-4"
+              onClick={() => startPreview.mutate()}
+              loading={startPreview.isPending}
+            >
+              <Play className="h-3.5 w-3.5" />
+              Start Preview
+            </Button>
           </div>
         )}
       </div>

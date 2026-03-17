@@ -2,16 +2,12 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-export interface PaginationMeta {
+export interface PaginatedResponse<T> {
+  data: T[];
   total: number;
   page: number;
   limit: number;
   totalPages: number;
-}
-
-export interface PaginatedResponse<T> {
-  data: T[];
-  meta: PaginationMeta;
 }
 
 export interface PaginationParams {

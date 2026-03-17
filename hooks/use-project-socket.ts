@@ -43,8 +43,22 @@ export function useProjectSocket(projectId: string) {
           queryClient.invalidateQueries({
             queryKey: QUERY_KEYS.CONVERSATIONS(projectId),
           });
+          // Also invalidate individual conversation queries so active chat refreshes
+          queryClient.invalidateQueries({ queryKey: ['conversation'] });
         }
       ),
+
+      subscribe('preview:building', () => {
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SANDBOX_STATUS(projectId) });
+      }),
+
+      subscribe<{ url: string }>('preview:ready', () => {
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SANDBOX_STATUS(projectId) });
+      }),
+
+      subscribe<{ error: string }>('preview:error', () => {
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SANDBOX_STATUS(projectId) });
+      }),
     ];
 
     return () => {

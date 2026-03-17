@@ -34,10 +34,10 @@ export default function AdminUsersPage() {
         <>
           <UsersTable users={users} isLoading={isLoading} />
 
-          {data?.meta && (
+          {data && data.totalPages > 1 && (
             <Pagination
               page={page}
-              totalPages={data.meta.totalPages}
+              totalPages={data.totalPages}
               onPageChange={setPage}
               className="mt-6"
             />

@@ -92,10 +92,10 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {data?.meta && (
+          {data && data.totalPages > 1 && (
             <Pagination
               page={page}
-              totalPages={data.meta.totalPages}
+              totalPages={data.totalPages}
               onPageChange={setPage}
               className="mt-8"
             />
