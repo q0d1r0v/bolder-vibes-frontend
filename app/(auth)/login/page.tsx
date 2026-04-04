@@ -67,12 +67,12 @@ export default function LoginPage() {
             <label className="block text-sm font-medium text-text-primary">
               Password
             </label>
-            <button
-              type="button"
+            <Link
+              href="/forgot-password"
               className="text-xs text-accent hover:underline"
             >
               Forgot password?
-            </button>
+            </Link>
           </div>
           <div className="relative">
             <input
@@ -87,6 +87,7 @@ export default function LoginPage() {
             />
             <button
               type="button"
+              aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors"
             >

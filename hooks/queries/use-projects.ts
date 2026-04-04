@@ -21,10 +21,11 @@ export function useProject(id: string) {
   });
 }
 
-export function useTemplates() {
+export function useTemplates(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: QUERY_KEYS.TEMPLATES,
     queryFn: () => projectsApi.getTemplates(),
+    enabled: options?.enabled ?? true,
   });
 }
 

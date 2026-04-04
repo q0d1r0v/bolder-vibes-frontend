@@ -29,3 +29,13 @@ export async function getProfile(): Promise<User> {
   const res = await api.get<User>('/auth/me');
   return res.data;
 }
+
+export async function forgotPassword(email: string): Promise<{ message: string }> {
+  const res = await api.post<{ message: string }>('/auth/forgot-password', { email });
+  return res.data;
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
+  const res = await api.post<{ message: string }>('/auth/reset-password', { token, newPassword });
+  return res.data;
+}

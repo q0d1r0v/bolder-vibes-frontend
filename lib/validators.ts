@@ -10,7 +10,11 @@ export const registerSchema = z.object({
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
-    .max(128, 'Password must be at most 128 characters'),
+    .max(128, 'Password must be at most 128 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+      'Password must contain at least one uppercase letter, one lowercase letter, and one digit',
+    ),
   name: z.string().max(100, 'Name must be at most 100 characters').optional(),
 });
 
@@ -24,7 +28,10 @@ export const createProjectSchema = z.object({
 });
 
 export const sendMessageSchema = z.object({
-  content: z.string().min(1, 'Message cannot be empty'),
+  content: z
+    .string()
+    .min(1, 'Message cannot be empty')
+    .max(10000, 'Message must not exceed 10,000 characters'),
 });
 
 export const createConversationSchema = z.object({

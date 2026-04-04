@@ -22,7 +22,7 @@ interface CreateProjectDialogProps {
 export function CreateProjectDialog({ open, onClose }: CreateProjectDialogProps) {
   const router = useRouter();
   const createProject = useCreateProject();
-  const { data: templates, isLoading: templatesLoading } = useTemplates();
+  const { data: templates, isLoading: templatesLoading } = useTemplates({ enabled: open });
 
   const {
     register,
@@ -81,6 +81,7 @@ export function CreateProjectDialog({ open, onClose }: CreateProjectDialogProps)
           <textarea
             placeholder="What are you building?"
             rows={3}
+            maxLength={500}
             className="w-full px-4 py-3 rounded-xl bg-white border border-border-subtle text-sm text-text-primary placeholder:text-text-muted outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/10 resize-none"
             {...register("description")}
           />

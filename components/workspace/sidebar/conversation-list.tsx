@@ -11,7 +11,7 @@ interface ConversationListProps {
   conversations: Conversation[];
   activeId: string | null;
   onSelect: (id: string) => void;
-  onCreate: () => void;
+  onCreate?: () => void;
   onDelete: (id: string) => void;
   deleteLoading?: boolean;
 }
@@ -44,9 +44,11 @@ export function ConversationList({
         <span className="text-xs font-medium text-text-muted uppercase tracking-wider">
           Conversations
         </span>
-        <IconButton size="sm" onClick={onCreate}>
-          <Plus className="h-4 w-4" />
-        </IconButton>
+        {onCreate && (
+          <IconButton size="sm" onClick={onCreate}>
+            <Plus className="h-4 w-4" />
+          </IconButton>
+        )}
       </div>
 
       <div className="space-y-0.5 px-1">

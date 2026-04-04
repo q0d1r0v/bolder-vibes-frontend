@@ -13,9 +13,10 @@ export function getRefreshToken(): string | null {
   return localStorage.getItem(REFRESH_TOKEN_KEY);
 }
 
-export function setStoredTokens(accessToken: string, refreshToken: string): void {
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-  localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+export function setStoredTokens(newAccessToken: string, newRefreshToken: string): void {
+  localStorage.setItem(ACCESS_TOKEN_KEY, newAccessToken);
+  localStorage.setItem(REFRESH_TOKEN_KEY, newRefreshToken);
+  // Auth status cookie for middleware (non-sensitive, just presence indicator)
   document.cookie = `${AUTH_COOKIE_NAME}=1; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
 }
 

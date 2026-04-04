@@ -17,11 +17,11 @@ api.interceptors.request.use((config) => {
 });
 
 // Response interceptor: unwrap backend { statusCode, data, timestamp } wrapper
-// Paginated responses contain "totalPages" alongside "data" — preserve them intact
+// Paginated responses contain a "meta" object alongside "data" — preserve them intact
 api.interceptors.response.use((response) => {
   if (response.data && 'data' in response.data) {
-    if ('totalPages' in response.data) {
-      return response; // Paginated — keep { data, total, page, limit, totalPages }
+    if ('meta' in response.data) {
+      return response; // Paginated — keep { data, meta: { total, page, limit, totalPages } }
     }
     response.data = response.data.data; // Non-paginated — unwrap to inner data
   }
@@ -54,7 +54,9 @@ api.interceptors.response.use(undefined, async (error: AxiosError) => {
   }
 
   // Don't retry refresh or login requests
-  if (originalRequest.url?.includes('/auth/refresh') || originalRequest.url?.includes('/auth/login')) {
+  if (originalRequest.url?.includes('/auth/refresh') || 
+      originalRequest.url?.includes('/auth/login') ||
+      originalRequest.url?.includes('/auth/register')) {
     return Promise.reject(error);
   }
 
@@ -73,7 +75,12 @@ api.interceptors.response.use(undefined, async (error: AxiosError) => {
   try {
     const refreshToken = getRefreshToken();
     if (!refreshToken) {
-      throw new Error('No refresh token');
+      // No refresh token available - user needs to log in again
+      clearStoredTokens();
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('auth:logout'));
+      }
+      throw new Error('No refresh token available');
     }
 
     const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, { refreshToken }, {
@@ -91,9 +98,12 @@ api.interceptors.response.use(undefined, async (error: AxiosError) => {
   } catch (refreshError) {
     processQueue(refreshError, null);
     clearStoredTokens();
+    
+    // Dispatch custom event to notify app of auth failure
     if (typeof window !== 'undefined') {
-      window.location.href = '/login';
+      window.dispatchEvent(new CustomEvent('auth:logout'));
     }
+    
     return Promise.reject(refreshError);
   } finally {
     isRefreshing = false;

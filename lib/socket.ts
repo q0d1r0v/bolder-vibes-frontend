@@ -11,8 +11,17 @@ export function getSocket(): Socket {
       transports: ['websocket', 'polling'],
       autoConnect: false,
       reconnection: true,
-      reconnectionAttempts: 5,
+      reconnectionAttempts: Infinity,
       reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+    });
+
+    // Refresh auth token before each reconnect attempt so expired JWTs
+    // don't cause permanent disconnection
+    socket.on('reconnect_attempt', () => {
+      if (socket) {
+        socket.auth = { token: getAccessToken() };
+      }
     });
   }
   return socket;
@@ -31,4 +40,40 @@ export function disconnectSocket(): void {
     socket.disconnect();
     socket = null;
   }
+}
+
+/**
+ * Returns true if the socket is currently connected.
+ */
+export function isSocketConnected(): boolean {
+  return socket?.connected ?? false;
+}
+
+/**
+ * Wait for the socket to be connected (resolves immediately if already connected).
+ * Rejects after timeoutMs if the socket doesn't connect in time.
+ */
+export function waitForConnection(timeoutMs = 5000): Promise<void> {
+  const s = getSocket();
+  if (s.connected) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      s.off('connect', onConnect);
+      reject(new Error('Socket connection timed out'));
+    }, timeoutMs);
+
+    const onConnect = () => {
+      clearTimeout(timer);
+      resolve();
+    };
+
+    s.once('connect', onConnect);
+
+    // Ensure connection attempt is in progress
+    if (!s.connected && !s.active) {
+      s.auth = { token: getAccessToken() };
+      s.connect();
+    }
+  });
 }

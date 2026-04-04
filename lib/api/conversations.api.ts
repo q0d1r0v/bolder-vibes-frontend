@@ -2,6 +2,7 @@ import api from './axios';
 import type {
   Conversation,
   Message,
+  AiModel,
   CreateConversationRequest,
   CreateMessageRequest,
   PaginatedResponse,
@@ -46,4 +47,9 @@ export async function sendMessage(
 
 export async function deleteConversation(id: string): Promise<void> {
   await api.delete(`/conversations/${id}`);
+}
+
+export async function getAiModels(): Promise<AiModel[]> {
+  const res = await api.get<AiModel[]>('/ai/models');
+  return res.data;
 }

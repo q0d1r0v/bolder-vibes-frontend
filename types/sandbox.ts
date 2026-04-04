@@ -24,5 +24,6 @@ export interface PreviewStatusResponse {
   projectId: string;
   status: PreviewStatus;
   url?: string;
+  proxyUrl?: string;
   error?: string;
 }

@@ -42,31 +42,39 @@ function Dialog({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={title ? "dialog-title" : undefined}
+      aria-describedby={description ? "dialog-description" : undefined}
+    >
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
         onClick={onClose}
+        aria-hidden="true"
       />
       <div
         className={cn(
-          "relative bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 animate-in fade-in zoom-in-95",
+          "relative bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 animate-in fade-in zoom-in-95 duration-200",
           className
         )}
       >
         <button
           onClick={onClose}
+          aria-label="Close dialog"
           className="absolute top-4 right-4 p-1 rounded-full text-text-muted hover:text-text-primary hover:bg-black/5 transition-colors"
         >
           <X className="h-4 w-4" />
         </button>
 
         {title && (
-          <h2 className="text-lg font-semibold text-text-primary pr-8">
+          <h2 id="dialog-title" className="text-lg font-semibold text-text-primary pr-8">
             {title}
           </h2>
         )}
         {description && (
-          <p className="text-sm text-text-secondary mt-1">{description}</p>
+          <p id="dialog-description" className="text-sm text-text-secondary mt-1">{description}</p>
         )}
 
         <div className={cn(title || description ? "mt-5" : "")}>

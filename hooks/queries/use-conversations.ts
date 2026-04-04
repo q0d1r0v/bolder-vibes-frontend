@@ -6,6 +6,14 @@ import * as conversationsApi from '@/lib/api/conversations.api';
 import { QUERY_KEYS } from '@/lib/constants';
 import type { CreateConversationRequest, CreateMessageRequest, PaginationParams } from '@/types';
 
+export function useAiModels() {
+  return useQuery({
+    queryKey: ['ai-models'],
+    queryFn: () => conversationsApi.getAiModels(),
+    staleTime: Infinity,
+  });
+}
+
 export function useConversations(projectId: string, params?: PaginationParams) {
   return useQuery({
     queryKey: [...QUERY_KEYS.CONVERSATIONS(projectId), params],
@@ -19,6 +27,10 @@ export function useConversation(id: string) {
     queryKey: QUERY_KEYS.CONVERSATION(id),
     queryFn: () => conversationsApi.getConversation(id),
     enabled: !!id,
+    // Keep conversation fresh - refetch after 30 seconds
+    staleTime: 30 * 1000,
+    // Always refetch when invalidated (e.g., after socket message)
+    refetchOnWindowFocus: false,
   });
 }
 

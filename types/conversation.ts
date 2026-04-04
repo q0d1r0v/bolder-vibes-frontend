@@ -30,3 +30,11 @@ export interface CreateConversationRequest {
 export interface CreateMessageRequest {
   content: string;
 }
+
+export interface AiModel {
+  id: string;
+  name: string;
+  description: string;
+  maxTokens: number;
+  costTier: 'low' | 'medium' | 'high';
+}

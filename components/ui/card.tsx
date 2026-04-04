@@ -22,7 +22,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={cn(
           variantStyles[variant],
-          hoverable && "transition-all hover:shadow-md hover:-translate-y-0.5 cursor-pointer",
+          hoverable && "transition-all duration-200 hover:shadow-lg hover:shadow-black/6 hover:-translate-y-0.5 hover:border-gray-200 cursor-pointer",
           "p-6",
           className
         )}

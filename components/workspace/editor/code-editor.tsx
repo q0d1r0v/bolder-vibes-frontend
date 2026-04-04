@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import Editor, { type OnMount } from "@monaco-editor/react";
 import { Spinner } from "@/components/ui/spinner";
+import { EditorErrorBoundary } from "./editor-error-boundary";
 import { getFileLanguage } from "@/lib/utils";
 import type { ProjectFile } from "@/types";
 
@@ -69,6 +70,7 @@ export function CodeEditor({
   const content = unsavedContent ?? file.content;
 
   return (
+    <EditorErrorBoundary>
     <Editor
       height="100%"
       language={language}
@@ -99,5 +101,6 @@ export function CodeEditor({
       }}
       theme="vs-light"
     />
+    </EditorErrorBoundary>
   );
 }

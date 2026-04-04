@@ -102,6 +102,7 @@ export default function RegisterPage() {
             />
             <button
               type="button"
+              aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors"
             >
@@ -126,13 +127,13 @@ export default function RegisterPage() {
 
       <p className="text-xs text-text-muted text-center mt-6 leading-relaxed">
         By creating an account, you agree to our{" "}
-        <span className="text-text-secondary cursor-pointer hover:underline">
+        <Link href="/terms" className="text-text-secondary hover:underline">
           Terms of Service
-        </span>{" "}
+        </Link>{" "}
         and{" "}
-        <span className="text-text-secondary cursor-pointer hover:underline">
+        <Link href="/privacy" className="text-text-secondary hover:underline">
           Privacy Policy
-        </span>
+        </Link>
         .
       </p>
     </AuthLayout>

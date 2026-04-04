@@ -34,3 +34,12 @@ export async function getPreviewStatus(projectId: string): Promise<PreviewStatus
 export async function stopPreview(projectId: string): Promise<void> {
   await api.post(`/projects/${projectId}/sandbox/preview/stop`);
 }
+
+export async function getPreviewToken(
+  projectId: string
+): Promise<{ token: string }> {
+  const res = await api.get<{ token: string }>(
+    `/projects/${projectId}/preview/token`
+  );
+  return res.data;
+}

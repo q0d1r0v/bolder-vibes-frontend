@@ -26,8 +26,21 @@ export function useStartPreview(projectId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SANDBOX_STATUS(projectId) });
     },
-    onError: () => {
-      toast.error('Failed to start preview');
+    onError: (error: unknown) => {
+      const axiosError = error as { response?: { status?: number } };
+      const status = axiosError?.response?.status;
+      if (status === 401) {
+        toast.error('Session expired. Please log in again.');
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
+      } else if (status === 403) {
+        toast.error('You do not have permission to access this project.');
+      } else if (status === 404) {
+        toast.error('Project not found.');
+      } else {
+        toast.error('Failed to start preview. Please try again.');
+      }
     },
   });
 }
