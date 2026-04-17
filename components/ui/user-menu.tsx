@@ -1,12 +1,14 @@
 "use client";
 
-import { LogOut, User as UserIcon } from "lucide-react";
+import { LogOut, Settings as SettingsIcon, User as UserIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Avatar } from "./avatar";
 import { Dropdown, type DropdownItem } from "./dropdown";
 import { useAuth } from "@/hooks/use-auth";
 
 function UserMenu() {
   const { user, logout } = useAuth();
+  const router = useRouter();
 
   const items: DropdownItem[] = [
     {
@@ -14,6 +16,11 @@ function UserMenu() {
       icon: <UserIcon className="h-4 w-4" />,
       onClick: () => {},
       disabled: true,
+    },
+    {
+      label: "Settings",
+      icon: <SettingsIcon className="h-4 w-4" />,
+      onClick: () => router.push("/settings"),
     },
     {
       label: "Sign out",

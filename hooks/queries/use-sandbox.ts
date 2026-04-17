@@ -59,6 +59,38 @@ export function useStopPreview(projectId: string) {
   });
 }
 
+/**
+ * Restart = stop → tiny delay for the container to tear down → start.
+ * Surfaces a single mutation to the UI so the user only clicks once
+ * when the in-memory Metro cache or a stale preview instance is making
+ * the iframe show old output.
+ */
+export function useRestartPreview(projectId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      try {
+        await sandboxApi.stopPreview(projectId);
+      } catch {
+        /* already stopped — fall through to start */
+      }
+      // Small delay so the Docker daemon finishes releasing the
+      // container name + host port before the new one spawns.
+      await new Promise((r) => setTimeout(r, 500));
+      return sandboxApi.startPreview(projectId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.SANDBOX_STATUS(projectId),
+      });
+    },
+    onError: () => {
+      toast.error('Failed to restart preview');
+    },
+  });
+}
+
 export function useExecuteSandbox(projectId: string) {
   return useMutation({
     mutationFn: (data: SandboxExecuteRequest) =>

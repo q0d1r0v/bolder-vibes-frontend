@@ -55,7 +55,7 @@ export function AgentProgress() {
   };
 
   return (
-    <div className="border-t border-border-subtle bg-gray-50/50 px-4 py-3">
+    <div className="border-t border-border-subtle bg-white/[0.03] px-4 py-3">
       {/* Typing indicator */}
       <div className="flex items-center gap-2 mb-3">
         <div className="flex items-center gap-1">
@@ -69,7 +69,7 @@ export function AgentProgress() {
       <Stepper steps={stepperSteps} />
 
       {partialOutput && (
-        <div className="mt-2 p-2 bg-white rounded-lg text-xs text-text-secondary max-h-20 overflow-y-auto">
+        <div className="mt-2 p-2 bg-white/[0.04] rounded-lg text-xs text-text-secondary max-h-20 overflow-y-auto">
           {partialOutput}
         </div>
       )}

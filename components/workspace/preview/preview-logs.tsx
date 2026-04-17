@@ -75,7 +75,7 @@ export function PreviewLogs({ projectId }: PreviewLogsProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex items-center justify-between px-3 py-1 border-b border-border-subtle bg-gray-50">
+      <div className="flex items-center justify-between px-3 py-1 border-b border-border-subtle bg-white/[0.03]">
         <span className="text-xs text-text-muted">
           {logs.length} lines
         </span>

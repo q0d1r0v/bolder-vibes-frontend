@@ -48,10 +48,10 @@ export function UsersTable({ users, isLoading }: UsersTableProps) {
 
   return (
     <>
-      <div className="bg-white rounded-2xl border border-border-subtle overflow-hidden">
+      <div className="bg-white/[0.04] rounded-2xl border border-border-subtle overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border-subtle bg-gray-50/50">
+            <tr className="border-b border-border-subtle bg-white/[0.03]">
               <th className="text-left text-xs font-medium text-text-muted uppercase tracking-wider px-6 py-3">
                 Name
               </th>
@@ -96,7 +96,7 @@ export function UsersTable({ users, isLoading }: UsersTableProps) {
               return (
                 <tr
                   key={user.id}
-                  className="border-b border-border-subtle last:border-0 hover:bg-gray-50/50"
+                  className="border-b border-border-subtle last:border-0 hover:bg-white/[0.06]"
                 >
                   <td className="px-6 py-4 text-sm font-medium text-text-primary">
                     {user.name || "—"}

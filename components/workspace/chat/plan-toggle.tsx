@@ -14,8 +14,8 @@ export function PlanToggle() {
       className={cn(
         "flex items-center gap-1 px-2 py-1 rounded-md text-xs transition-colors",
         planMode
-          ? "bg-amber-100 text-amber-700 border border-amber-300"
-          : "text-text-muted hover:bg-gray-100"
+          ? "bg-amber-500/15 text-amber-400 border border-amber-500/30"
+          : "text-text-muted hover:bg-white/[0.08]"
       )}
     >
       <ListChecks className="h-3 w-3" />

@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 const AUTH_COOKIE = 'bolder-vibes-auth-status';
 
-const PUBLIC_PATHS = ['/', '/login', '/register'];
+const PUBLIC_PATHS = ['/', '/login', '/register', '/terms', '/privacy'];
 const AUTH_PATHS = ['/login', '/register'];
 const PROTECTED_PREFIXES = ['/dashboard', '/project'];
 const ADMIN_PREFIXES = ['/admin'];

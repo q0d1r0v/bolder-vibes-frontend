@@ -3,7 +3,6 @@ import type {
   Project,
   CreateProjectRequest,
   UpdateProjectRequest,
-  Template,
   PaginatedResponse,
   PaginationParams,
 } from '@/types';
@@ -32,7 +31,33 @@ export async function deleteProject(id: string): Promise<void> {
   await api.delete(`/projects/${id}`);
 }
 
-export async function getTemplates(): Promise<Template[]> {
-  const res = await api.get<Template[]>('/projects/templates');
-  return res.data;
+/**
+ * Fetch the project source code as a ZIP blob and trigger a browser
+ * download. Returns the suggested filename from the server.
+ */
+export async function downloadProjectSource(
+  id: string,
+): Promise<{ filename: string }> {
+  const res = await api.get<Blob>(`/projects/${id}/download`, {
+    responseType: 'blob',
+  });
+
+  // Prefer the server-supplied filename from Content-Disposition,
+  // fall back to a sensible default.
+  const disposition =
+    (res.headers['content-disposition'] as string | undefined) ?? '';
+  const match = /filename="?([^"]+)"?/i.exec(disposition);
+  const filename = match?.[1] ?? `project-${id.slice(0, 8)}-source.zip`;
+
+  const url = window.URL.createObjectURL(res.data);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
+
+  return { filename };
 }
+

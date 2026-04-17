@@ -74,7 +74,7 @@ function ResizableHandle({ direction, className }: ResizableHandleProps) {
     >
       <div
         className={cn(
-          "rounded-full bg-gray-300 group-hover:bg-accent/40 transition-colors",
+          "rounded-full bg-white/[0.12] group-hover:bg-accent/40 transition-colors",
           direction === "horizontal" ? "w-0.5 h-8" : "h-0.5 w-8"
         )}
       />

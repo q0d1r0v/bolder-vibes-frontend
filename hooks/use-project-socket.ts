@@ -32,30 +32,6 @@ export function useProjectSocket(projectId: string) {
   useEffect(() => {
 
     const unsubs = [
-      subscribe<{ fileId: string; path: string; projectId: string }>(
-        'file:created',
-        () => {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FILES(projectId) });
-          queryClient.invalidateQueries({ queryKey: ['file', projectId] });
-        }
-      ),
-
-      subscribe<{ fileId: string; path: string; projectId: string }>(
-        'file:updated',
-        () => {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FILES(projectId) });
-          queryClient.invalidateQueries({ queryKey: ['file', projectId] });
-        }
-      ),
-
-      subscribe<{ fileId: string; path: string; projectId: string }>(
-        'file:deleted',
-        () => {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FILES(projectId) });
-          queryClient.invalidateQueries({ queryKey: ['file', projectId] });
-        }
-      ),
-
       subscribe<{ messageId: string; role: string; content: string; createdAt?: string }>(
         'message:received',
         (data) => {

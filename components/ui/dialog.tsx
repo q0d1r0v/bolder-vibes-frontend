@@ -56,14 +56,14 @@ function Dialog({
       />
       <div
         className={cn(
-          "relative bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 animate-in fade-in zoom-in-95 duration-200",
+          "relative bg-[#1a1a24] backdrop-blur-xl rounded-2xl shadow-2xl border border-white/[0.1] p-6 max-w-md w-full mx-4 animate-in fade-in zoom-in-95 duration-200",
           className
         )}
       >
         <button
           onClick={onClose}
           aria-label="Close dialog"
-          className="absolute top-4 right-4 p-1 rounded-full text-text-muted hover:text-text-primary hover:bg-black/5 transition-colors"
+          className="absolute top-4 right-4 p-1 rounded-full text-text-muted hover:text-text-primary hover:bg-white/[0.06] transition-colors"
         >
           <X className="h-4 w-4" />
         </button>

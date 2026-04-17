@@ -14,7 +14,7 @@ interface ChunkPayload {
   fileOperation?: FileOperation;
 }
 
-export function useChatStream(projectId?: string) {
+export function useChatStream() {
   const { subscribe, emit } = useSocket();
   const queryClient = useQueryClient();
   const {
@@ -45,16 +45,6 @@ export function useChatStream(projectId?: string) {
           }
           if (data.fileOperation) {
             addFileOperation(data.fileOperation);
-            // Invalidate files query so file explorer refreshes
-            if (projectId) {
-              queryClient.invalidateQueries({
-                queryKey: QUERY_KEYS.FILES(projectId),
-              });
-              // Also invalidate individual file queries so open editors refresh
-              queryClient.invalidateQueries({
-                queryKey: ['file', projectId],
-              });
-            }
           }
         },
       ),
@@ -67,12 +57,6 @@ export function useChatStream(projectId?: string) {
             queryKey: QUERY_KEYS.CONVERSATION(data.conversationId),
           });
           queryClient.invalidateQueries({ queryKey: ['conversation'] });
-          // Final files refresh
-          if (projectId) {
-            queryClient.invalidateQueries({
-              queryKey: QUERY_KEYS.FILES(projectId),
-            });
-          }
         },
       ),
 
@@ -88,7 +72,7 @@ export function useChatStream(projectId?: string) {
     return () => {
       unsubs.forEach((unsub) => unsub());
     };
-  }, [subscribe, startStreaming, appendChunk, addFileOperation, endStreaming, queryClient, projectId]);
+  }, [subscribe, startStreaming, appendChunk, addFileOperation, endStreaming, queryClient]);
 
   const { selectedModel, planMode } = useChatStore();
 
@@ -118,8 +102,25 @@ export function useChatStream(projectId?: string) {
     [emit, selectedModel, planMode, queryClient],
   );
 
+  const stopMessage = useCallback(
+    async (conversationId: string) => {
+      if (!conversationId) return;
+      try {
+        await emit('stop_chat', { conversationId });
+      } catch {
+        // Even if the emit fails, the UI will clear streaming state when
+        // the server eventually sends chat:response_end.
+      }
+      // Optimistically clear local streaming state so the Stop button
+      // flips back to Send immediately.
+      endStreaming();
+    },
+    [emit, endStreaming],
+  );
+
   return {
     sendMessage,
+    stopMessage,
     isStreaming,
     streamingContent,
     streamingConversationId,

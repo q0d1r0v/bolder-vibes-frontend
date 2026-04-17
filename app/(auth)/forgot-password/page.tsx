@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowLeft, Mail, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { AuthLayout } from "@/components/layouts/auth-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,29 +44,16 @@ export default function ForgotPasswordPage() {
 
   if (isSubmitted) {
     return (
-      <AuthLayout
-        heading="Check your email"
-        description="We've sent you instructions to reset your password."
-      >
+      <AuthLayout heading="Email sent" description="Check your inbox for the reset link.">
         <div className="text-center space-y-6">
-          <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-full bg-success/15 flex items-center justify-center mx-auto">
             <CheckCircle className="h-8 w-8 text-success" />
           </div>
-
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-text-primary mb-2">
-              Email sent
-            </h1>
-            <p className="text-sm text-text-secondary">
-              If an account exists with that email, you will receive a password
-              reset link shortly.
-            </p>
-          </div>
-
+          <p className="text-sm text-gray-400">
+            If an account exists with that email, you will receive a password reset link shortly.
+          </p>
           <Link href="/login">
-            <Button variant="secondary" fullWidth>
-              Back to Sign In
-            </Button>
+            <Button variant="secondary" fullWidth>Back to Sign In</Button>
           </Link>
         </div>
       </AuthLayout>
@@ -74,30 +61,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <AuthLayout
-      heading="Reset your password"
-      description="Enter your email and we'll send you instructions to reset your password."
-    >
-      <Link
-        href="/login"
-        className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors mb-8"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Sign In
-      </Link>
-
-      <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-6">
-        <Mail className="h-6 w-6 text-accent" />
-      </div>
-
-      <h1 className="text-2xl font-semibold tracking-tight text-text-primary mb-2">
-        Forgot your password?
-      </h1>
-      <p className="text-sm text-text-secondary mb-8">
-        No worries! Enter your email address and we&apos;ll send you a link to
-        reset your password.
-      </p>
-
+    <AuthLayout heading="Forgot password?" description="Enter your email and we'll send you a reset link.">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Input
           label="Email"
@@ -106,11 +70,14 @@ export default function ForgotPasswordPage() {
           error={errors.email?.message}
           {...register("email")}
         />
-
         <Button type="submit" fullWidth loading={isSubmitting}>
           {isSubmitting ? "Sending..." : "Send Reset Link"}
         </Button>
       </form>
+
+      <p className="text-xs text-gray-500 text-center mt-6">
+        <Link href="/login" className="text-accent hover:underline">Back to Sign In</Link>
+      </p>
     </AuthLayout>
   );
 }

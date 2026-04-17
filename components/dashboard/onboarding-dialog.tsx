@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, Code2, MessageSquare, ArrowRight } from "lucide-react";
+import { Sparkles, Smartphone, MessageSquare, ArrowRight } from "lucide-react";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
@@ -14,23 +14,23 @@ interface OnboardingDialogProps {
 const steps = [
   {
     icon: MessageSquare,
-    title: "Tell AI what to build",
+    title: "Describe your app idea",
     description:
-      "Describe your app idea in plain language. No coding knowledge needed — just say what you want!",
-    color: "bg-accent/10 text-accent",
+      "Tell AI what you want to build in plain language. No coding knowledge needed — just describe your mobile app!",
+    color: "bg-accent/15 text-accent",
   },
   {
-    icon: Code2,
-    title: "Watch your code appear",
+    icon: Smartphone,
+    title: "AI builds your app",
     description:
-      "AI generates production-ready code in real time. You can see every file being created and modified.",
-    color: "bg-success/10 text-success",
+      "AI creates your mobile app in real time. Watch it come to life as screens, navigation, and features are built automatically.",
+    color: "bg-success/15 text-success",
   },
   {
     icon: Sparkles,
-    title: "Preview & iterate",
+    title: "Preview & refine",
     description:
-      "See your app running live. Keep chatting with AI to add features, fix issues, or redesign anything.",
+      "See your app running live on a phone preview. Keep chatting to add features, change designs, or tweak anything.",
     color: "bg-warning/10 text-warning",
   },
 ];
@@ -71,7 +71,7 @@ export function OnboardingDialog({
                   ? "w-8 bg-accent"
                   : i < currentStep
                     ? "w-4 bg-accent/40"
-                    : "w-4 bg-gray-200"
+                    : "w-4 bg-white/[0.06]"
               }`}
             />
           ))}
@@ -101,7 +101,7 @@ export function OnboardingDialog({
             Skip
           </button>
           <Button onClick={handleNext} className="group">
-            {isLastStep ? "Create My First Project" : "Next"}
+            {isLastStep ? "Create My First App" : "Next"}
             <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
           </Button>
         </div>

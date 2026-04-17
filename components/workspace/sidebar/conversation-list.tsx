@@ -60,7 +60,7 @@ export function ConversationList({
               "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-colors group",
               activeId === conv.id
                 ? "bg-accent-soft/50 text-accent"
-                : "hover:bg-black/[0.04] text-text-primary"
+                : "hover:bg-white/[0.06] text-text-primary"
             )}
           >
             <MessageSquare className="h-4 w-4 flex-shrink-0" />

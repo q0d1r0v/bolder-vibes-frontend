@@ -27,8 +27,8 @@ function Stepper({ steps, className }: StepperProps) {
                 className={cn(
                   "w-0.5 h-8 mt-1",
                   step.status === "COMPLETED"
-                    ? "bg-emerald-400"
-                    : "bg-gray-200"
+                    ? "bg-emerald-500"
+                    : "bg-white/[0.08]"
                 )}
               />
             )}
@@ -40,7 +40,7 @@ function Stepper({ steps, className }: StepperProps) {
                 step.status === "RUNNING"
                   ? "text-accent"
                   : step.status === "COMPLETED"
-                  ? "text-emerald-700"
+                  ? "text-emerald-400"
                   : step.status === "FAILED"
                   ? "text-danger"
                   : "text-text-muted"
@@ -73,24 +73,24 @@ function StepIcon({ status }: { status: AgentStepStatus }) {
       );
     case "COMPLETED":
       return (
-        <div className={cn(base, "bg-emerald-100")}>
+        <div className={cn(base, "bg-emerald-500/20")}>
           <Check className="h-3.5 w-3.5 text-emerald-600" />
         </div>
       );
     case "FAILED":
       return (
-        <div className={cn(base, "bg-red-100")}>
+        <div className={cn(base, "bg-red-500/20")}>
           <X className="h-3.5 w-3.5 text-danger" />
         </div>
       );
     case "SKIPPED":
       return (
-        <div className={cn(base, "bg-gray-100")}>
+        <div className={cn(base, "bg-white/[0.06]")}>
           <Minus className="h-3.5 w-3.5 text-text-muted" />
         </div>
       );
     default:
-      return <div className={cn(base, "bg-gray-100")} />;
+      return <div className={cn(base, "bg-white/[0.06]")} />;
   }
 }
 

@@ -18,7 +18,7 @@ function Pagination({ page, totalPages, onPageChange, className }: PaginationPro
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
-        className="p-2 rounded-full hover:bg-black/[0.04] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-full hover:bg-white/[0.06] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -43,7 +43,7 @@ function Pagination({ page, totalPages, onPageChange, className }: PaginationPro
                 "h-8 w-8 rounded-full text-sm font-medium transition-colors",
                 item === page
                   ? "bg-accent text-white"
-                  : "text-text-secondary hover:bg-black/[0.04]"
+                  : "text-text-secondary hover:bg-white/[0.06]"
               )}
             >
               {item}
@@ -54,7 +54,7 @@ function Pagination({ page, totalPages, onPageChange, className }: PaginationPro
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
-        className="p-2 rounded-full hover:bg-black/[0.04] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-full hover:bg-white/[0.06] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         <ChevronRight className="h-4 w-4" />
       </button>

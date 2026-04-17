@@ -33,7 +33,7 @@ interface ChatActions {
 }
 
 // Default model ID - will be replaced with first available model from API
-const DEFAULT_MODEL_ID = 'claude-sonnet-4-20250514';
+const DEFAULT_MODEL_ID = 'claude-sonnet-4-6';
 
 export const useChatStore = create<ChatState & ChatActions>((set, get) => ({
   isStreaming: false,

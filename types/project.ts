@@ -6,7 +6,7 @@ export interface Project {
   description: string | null;
   status: ProjectStatus;
   templateId: string | null;
-  settings: Record<string, unknown>;
+  settings: { industry?: string } | null;
   ownerId: string;
   createdAt: string;
   updatedAt: string;
@@ -28,9 +28,3 @@ export interface UpdateProjectRequest {
   status?: ProjectStatus;
 }
 
-export interface Template {
-  id: string;
-  name: string;
-  description: string;
-  files: Array<{ path: string; content: string }>;
-}

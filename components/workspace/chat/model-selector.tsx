@@ -13,9 +13,9 @@ const costIcons = {
 } as const;
 
 const costColors = {
-  low: "text-green-600",
-  medium: "text-blue-600",
-  high: "text-purple-600",
+  low: "text-green-400",
+  medium: "text-blue-400",
+  high: "text-purple-400",
 } as const;
 
 export function ModelSelector() {
@@ -44,7 +44,7 @@ export function ModelSelector() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 px-2 py-1 rounded-md text-xs hover:bg-gray-100 transition-colors"
+        className="flex items-center gap-1.5 px-2 py-1 rounded-md text-xs hover:bg-white/[0.08] transition-colors"
       >
         <Icon className={cn("h-3 w-3", costColors[current.costTier])} />
         <span className="text-text-secondary font-medium">{current.name}</span>
@@ -52,7 +52,7 @@ export function ModelSelector() {
       </button>
 
       {open && (
-        <div className="absolute bottom-full right-0 mb-1 w-72 bg-white rounded-lg shadow-lg border border-border-subtle z-50 py-1">
+        <div className="absolute bottom-full right-0 mb-1 w-72 bg-[#1a1a24] backdrop-blur-xl rounded-lg shadow-lg border border-white/10 z-50 py-1">
           {models.map((model) => {
             const ModelIcon = costIcons[model.costTier];
             const isActive = model.id === selectedModel;
@@ -65,7 +65,7 @@ export function ModelSelector() {
                   setOpen(false);
                 }}
                 className={cn(
-                  "w-full text-left px-3 py-2 hover:bg-gray-50 transition-colors",
+                  "w-full text-left px-3 py-2 hover:bg-white/[0.06] transition-colors",
                   isActive && "bg-accent-soft/30"
                 )}
               >

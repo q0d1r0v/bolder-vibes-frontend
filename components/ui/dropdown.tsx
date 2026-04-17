@@ -39,7 +39,7 @@ function Dropdown({ trigger, items, align = "right", className }: DropdownProps)
       {open && (
         <div
           className={cn(
-            "absolute z-50 mt-1 min-w-[160px] bg-white rounded-xl shadow-lg border border-border-subtle py-1",
+            "absolute z-50 mt-1 min-w-[160px] bg-[#1a1a24] backdrop-blur-xl rounded-xl shadow-lg border border-white/[0.1] py-1",
             align === "right" ? "right-0" : "left-0"
           )}
         >
@@ -54,8 +54,8 @@ function Dropdown({ trigger, items, align = "right", className }: DropdownProps)
               className={cn(
                 "w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-left transition-colors",
                 item.danger
-                  ? "text-danger hover:bg-red-50"
-                  : "text-text-primary hover:bg-black/[0.04]",
+                  ? "text-danger hover:bg-red-500/15"
+                  : "text-text-primary hover:bg-white/[0.06]",
                 item.disabled && "opacity-50 cursor-not-allowed"
               )}
             >

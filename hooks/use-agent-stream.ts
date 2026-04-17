@@ -82,9 +82,7 @@ export function useAgentStream() {
         result: AgentTask['result'];
       }>('agent:task_completed', (data) => {
         completeTask(data.result);
-        // Refresh files and conversations after agent completes
         if (projectRoom) {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FILES(projectRoom) });
           queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CONVERSATIONS(projectRoom) });
           queryClient.invalidateQueries({ queryKey: QUERY_KEYS.AGENT_TASKS(projectRoom) });
         }

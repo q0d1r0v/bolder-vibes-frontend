@@ -10,9 +10,9 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 const variantStyles: Record<CardVariant, string> = {
   elevated:
-    "bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-border-subtle",
+    "bg-white/[0.04] backdrop-blur-sm rounded-2xl shadow-sm border border-border-subtle",
   filled: "bg-surface-secondary rounded-2xl",
-  outlined: "bg-white rounded-2xl border border-border-subtle",
+  outlined: "bg-white/[0.04] rounded-2xl border border-border-subtle",
 };
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
@@ -22,7 +22,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={cn(
           variantStyles[variant],
-          hoverable && "transition-all duration-200 hover:shadow-lg hover:shadow-black/6 hover:-translate-y-0.5 hover:border-gray-200 cursor-pointer",
+          hoverable && "transition-all duration-200 hover:shadow-lg hover:shadow-black/20 hover:-translate-y-0.5 hover:border-white/[0.15] cursor-pointer",
           "p-6",
           className
         )}

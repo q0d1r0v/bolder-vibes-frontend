@@ -56,7 +56,7 @@ export function MarkdownContent({
                     "px-1 py-0.5 rounded text-xs font-mono",
                     isUser
                       ? "bg-white/20"
-                      : "bg-gray-200 text-gray-800"
+                      : "bg-white/[0.08] text-text-primary"
                   )}
                   {...props}
                 >
@@ -86,7 +86,7 @@ export function MarkdownContent({
             <blockquote
               className={cn(
                 "border-l-2 pl-3 mb-2 italic",
-                isUser ? "border-white/40 text-white/80" : "border-gray-300 text-text-muted"
+                isUser ? "border-white/40 text-white/80" : "border-white/[0.12] text-text-muted"
               )}
             >
               {children}
@@ -109,7 +109,7 @@ export function MarkdownContent({
             <hr
               className={cn(
                 "my-2",
-                isUser ? "border-white/20" : "border-gray-200"
+                isUser ? "border-white/20" : "border-white/[0.08]"
               )}
             />
           ),
@@ -122,7 +122,7 @@ export function MarkdownContent({
             <th
               className={cn(
                 "border px-2 py-1 text-left font-semibold",
-                isUser ? "border-white/20" : "border-gray-200 bg-gray-50"
+                isUser ? "border-white/20" : "border-white/[0.08] bg-white/[0.03]"
               )}
             >
               {children}
@@ -132,7 +132,7 @@ export function MarkdownContent({
             <td
               className={cn(
                 "border px-2 py-1",
-                isUser ? "border-white/20" : "border-gray-200"
+                isUser ? "border-white/20" : "border-white/[0.08]"
               )}
             >
               {children}

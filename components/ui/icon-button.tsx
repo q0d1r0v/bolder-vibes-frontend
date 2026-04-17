@@ -17,8 +17,8 @@ const sizeStyles: Record<IconButtonSize, string> = {
 
 const variantStyles: Record<IconButtonVariant, string> = {
   default:
-    "hover:bg-black/[0.06] text-text-secondary hover:text-text-primary",
-  ghost: "hover:bg-black/[0.04] text-text-muted hover:text-text-secondary",
+    "hover:bg-white/[0.08] text-text-secondary hover:text-text-primary",
+  ghost: "hover:bg-white/[0.06] text-text-muted hover:text-text-secondary",
 };
 
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
